@@ -1,0 +1,43 @@
+---
+- name: Deploy nginx reverse proxy via Docker
+  hosts: localhost
+  gather_facts: false
+  become: true
+  collections:
+    - community.docker
+
+  vars:
+    lab_net: "lab_net"
+    conf_dir: "/opt/nginx-proxy"
+
+  tasks:
+    - name: Ensure docker service is running
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Ensure config dir exists
+      ansible.builtin.file:
+        path: "{{ conf_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Render nginx.conf
+      ansible.builtin.template:
+        src: templates/nginx.conf.j2
+        dest: "{{ conf_dir }}/nginx.conf"
+        mode: '0644'
+
+    - name: Run nginx proxy container
+      community.docker.docker_container:
+        name: nginx-proxy
+        image: "nginx:1.27-alpine"
+        state: started
+        restart_policy: unless-stopped
+        networks:
+          - name: "{{ lab_net }}"
+        published_ports:
+          - "80:80"
+        volumes:
+          - "{{ conf_dir }}/nginx.conf:/etc/nginx/nginx.conf:ro"
