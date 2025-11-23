@@ -50,8 +50,9 @@ docker run -d -p 5000:5000 ghcr.io/<user>/frost-webapp:latest
 
 ### **Option B — Docker Compose**
 docker compose up -d
+---
 
-🌍 Full DevOps Deployment
+## 🌍 Full DevOps Deployment
 Terraform + Ansible + Reverse Proxy
 Recommended way to deploy the full infrastructure.
 Requirements
