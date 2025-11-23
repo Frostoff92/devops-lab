@@ -31,3 +31,88 @@ The project demonstrates a *full DevOps lifecycle*, including:
 
 ## 🧱 Architecture (High-Level)
 
+GitHub Actions → builds + pushes → GHCR
+
+Local VM (Debian):
+├── Terraform → deploys docker network + containers (web + redis)
+├── Ansible → deploys nginx reverse proxy
+└── Docker → runtime for all components
+
+---
+
+## 🐳 Run the WebApp (simple mode)
+
+### **Option A — Docker**
+
+```bash
+docker pull ghcr.io/<user>/frost-webapp:latest
+docker run -d -p 5000:5000 ghcr.io/<user>/frost-webapp:latest
+
+### **Option B — Docker Compose**
+docker compose up -d
+
+🌍 Full DevOps Deployment
+Terraform + Ansible + Reverse Proxy
+Recommended way to deploy the full infrastructure.
+Requirements
+
+Docker Engine
+Terraform ≥ 1.3
+Ansible ≥ 2.19
+Ansible collection:
+ansible-galaxy collection install community.docker
+
+Deploy
+cd infra/terraform
+terraform init
+terraform apply -auto-approve
+
+Terraform will:
+
+Pull Docker images
+Create network lab_net
+Deploy:
+frost-webapp
+redis
+Output: web_url = http://localhost:5000
+
+Configure nginx reverse proxy
+cd ../ansible
+ansible-playbook -i inventory.ini site.yml
+
+Routes:
+App: http://localhost
+Healthcheck: http://localhost/healthz
+
+🗂 Project Structure
+devops-lab/
+├── app/                     # Flask application
+├── Dockerfile               # WebApp image
+├── docker-compose.yml       # Simple local deployment
+├── .github/workflows/       # CI/CD pipeline (GitHub Actions)
+└── infra/
+    ├── terraform/           # IaC: containers, networks, outputs
+    └── ansible/             # Reverse proxy setup
+
+🔧 Technologies Used
+
+Python + Flask
+Docker / Docker Compose
+GitHub Actions CI/CD
+GHCR
+Terraform (kreuzwerker/docker provider)
+Ansible (community.docker)
+nginx
+Redis
+
+🚀 Future improvements
+
+Monitoring (Prometheus + Grafana)
+Kubernetes deployment (k3s / Kind)
+Helm chart packaging
+Auto-deploy infrastructure via GitHub Actions
+
+👨‍💻 Author
+
+Frost — DevOps/SRE in progress
+“Пусть инфраструктура будет с вами.”
