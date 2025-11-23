@@ -30,15 +30,14 @@ The project demonstrates a **full DevOps lifecycle**, including:
 
 ## 🧱 Architecture (High-Level)
 
+```
 GitHub Actions → builds + pushes → GHCR
 
 Local VM (Debian):
-├── Terraform → deploys docker network + containers (web + redis)
-├── Ansible → deploys nginx reverse proxy
-└── Docker → runtime for all components
-
-yaml
-Копировать код
+ ├── Terraform → deploys docker network + containers (web + redis)
+ ├── Ansible   → deploys nginx reverse proxy
+ └── Docker    → runtime for all components
+```
 
 ---
 
@@ -49,64 +48,76 @@ yaml
 ```bash
 docker pull ghcr.io/frostoff92/frost-webapp:latest
 docker run -d -p 5000:5000 ghcr.io/frostoff92/frost-webapp:latest
-The app becomes available at:
+```
+
+App available at:  
 👉 http://localhost:5000
 
-Option B — Docker Compose
-bash
-Копировать код
+---
+
+### **Option B — Docker Compose**
+
+```bash
 docker compose up -d
-🌍 Full DevOps Deployment
-Terraform + Ansible + Reverse Proxy
-This is the recommended way to deploy the full infrastructure.
+```
 
-Requirements
-Docker Engine
+---
 
-Terraform ≥ 1.3
+## 🌍 Full DevOps Deployment  
+### Terraform + Ansible + Reverse Proxy
 
-Ansible ≥ 2.19
+> This is the **recommended** way to deploy the full infrastructure.
 
-Community Docker collection:
+### **Requirements**
 
-bash
-Копировать код
+- Docker Engine  
+- Terraform ≥ 1.3  
+- Ansible ≥ 2.19  
+- Community Docker collection:
+
+```bash
 ansible-galaxy collection install community.docker
-Deploy
-bash
-Копировать код
+```
+
+---
+
+### **Deploy**
+
+```bash
 cd infra/terraform
 terraform init
 terraform apply -auto-approve
+```
+
 Terraform will:
 
-Pull Docker images
+- Pull Docker images  
+- Create network `lab_net`
+- Deploy:
+  - `frost-webapp`
+  - `redis`
+- Output:  
+  `web_url = http://localhost:5000`
 
-Create network lab_net
+---
 
-Deploy:
+### **Configure nginx reverse proxy**
 
-frost-webapp
-
-redis
-
-Output:
-web_url = http://localhost:5000
-
-Configure nginx reverse proxy
-bash
-Копировать код
+```bash
 cd ../ansible
 ansible-playbook -i inventory.ini site.yml
+```
+
 Routes:
 
-App: http://localhost
+- App → **http://localhost**
+- Healthcheck → **http://localhost/healthz**
 
-Healthcheck: http://localhost/healthz
+---
 
-🗂 Project Structure
-bash
-Копировать код
+## 🗂 Project Structure
+
+```
 devops-lab/
 ├── app/                     # Flask application
 ├── Dockerfile               # WebApp image
@@ -115,37 +126,33 @@ devops-lab/
 └── infra/
     ├── terraform/           # IaC: containers, networks, outputs
     └── ansible/             # Reverse proxy setup
-🔧 Technologies Used
-Python + Flask
-
-Docker / Docker Compose
-
-GitHub Actions CI/CD
-
-GHCR
-
-Terraform (kreuzwerker/docker provider)
-
-Ansible (community.docker)
-
-nginx
-
-Redis
-
-🚀 Future improvements
-Monitoring (Prometheus + Grafana)
-
-Kubernetes deployment (k3s / Kind)
-
-Helm chart packaging
-
-Auto-deploy infrastructure via GitHub Actions
-
-👨‍💻 Author
-Frost — DevOps/SRE in progress
-“Пусть инфраструктура будет с вами.”
-
-yaml
-Копировать код
+```
 
 ---
+
+## 🔧 Technologies Used
+
+- Python + Flask  
+- Docker / Docker Compose  
+- GitHub Actions CI/CD  
+- GHCR  
+- Terraform (kreuzwerker/docker provider)  
+- Ansible (community.docker)  
+- nginx  
+- Redis  
+
+---
+
+## 🚀 Future improvements
+
+- Monitoring (Prometheus + Grafana)
+- Kubernetes deployment (k3s / Kind)
+- Helm chart packaging
+- Auto-deploy infrastructure via GitHub Actions
+
+---
+
+## 👨‍💻 Author
+
+**Frost — DevOps/SRE in progress**  
+“Пусть инфраструктура будет с вами.”
