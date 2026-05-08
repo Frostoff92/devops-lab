@@ -28,6 +28,10 @@ jobs:
         run: |
           python -m pytest
 
+      - name: Build Docker Image
+        run: |
+          docker build -t frost-webapp:ci .
+
       - name: Show runner info
         run: |
           echo "Runner OS: $RUNNER_OS"
