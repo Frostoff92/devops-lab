@@ -1,0 +1,24 @@
+name: CI Day 1
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show runner info
+        run: |
+          echo "Runner OS: $RUNNER_OS"
+          echo "GitHub ref: $GITHUB_REF"
+          echo "Commit SHA: $GITHUB_SHA"
+          pwd
+          ls -la
