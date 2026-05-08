@@ -38,6 +38,7 @@ jobs:
           sleep 5
           docker ps
           docker logs frost-webapp
+          curl http://localhost:8080
 
       - name: Show runner info
         run: |
