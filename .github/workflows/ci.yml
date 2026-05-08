@@ -1,13 +1,14 @@
 name: CI Day 1
 
 on:
-permissions:
-  contents: read
-  packages: write
   push:
     branches:
       - main
   pull_request:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   lint:
