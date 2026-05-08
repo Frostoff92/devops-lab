@@ -32,6 +32,13 @@ jobs:
         run: |
           docker build -t frost-webapp:ci .
 
+      - name: Smoke test Docker container
+        run: |
+          docker run -d --name frost-webapp -p 8080:5000 frost-webapp:ci
+          sleep 5
+          docker ps
+          docker logs frost-webapp
+
       - name: Show runner info
         run: |
           echo "Runner OS: $RUNNER_OS"
