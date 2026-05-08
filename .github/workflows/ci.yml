@@ -9,7 +9,7 @@ on:
 jobs:
   lint:
     name: Lint project
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
@@ -22,3 +22,10 @@ jobs:
           echo "Commit SHA: $GITHUB_SHA"
           pwd
           ls -la
+
+      - name: Show tool versions
+        run: |
+          git --version
+          docker --version
+          python3 --version
+          pip3 --version
