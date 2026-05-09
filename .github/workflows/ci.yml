@@ -11,6 +11,19 @@ permissions:
   packages: write
 
 jobs:
+
+  lint:
+    name: Lint YAML
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate workflow file
+        run: |
+          cat .github/workflows/ci.yml
+
   tests:
     name: Run tests
     runs-on: ubuntu-24.04
@@ -50,7 +63,9 @@ jobs:
   build:
     name: Build Docker image
     runs-on: ubuntu-24.04
-    needs: tests
+    needs:
+      - tests
+      - lint
 
     steps:
       - name: Checkout repository
