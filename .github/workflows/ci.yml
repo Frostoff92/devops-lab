@@ -12,18 +12,6 @@ permissions:
 
 jobs:
   tests:
-  build:
-    name: Build Docker image
-    runs-on: ubuntu-24.04
-    needs: tests
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Build Docker image
-        run: |
-          docker build -t frost-webapp:ci .
     name: Run tests
     runs-on: ubuntu-24.04
 
@@ -44,30 +32,6 @@ jobs:
         run: |
           python -m pytest
 
-      - name: Build Docker Image
-        run: |
-          docker build -t frost-webapp:ci .
-
-      - name: Login to GHCR
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Tag Docker image
-        run: |
-          docker tag frost-webapp:ci ghcr.io/frostoff92/frost-webapp:latest
-
-      - name: Push Docker image
-        run: |
-          docker push ghcr.io/frostoff92/frost-webapp:latest
-
-      - name: Smoke test Docker container
-        run: |
-          docker run -d --name frost-webapp -p 8080:5000 frost-webapp:ci
-          sleep 5
-          docker ps
-          docker logs frost-webapp
-          curl http://localhost:8080
-
       - name: Show runner info
         run: |
           echo "Runner OS: $RUNNER_OS"
@@ -82,3 +46,36 @@ jobs:
           docker --version
           python3 --version
           pip3 --version
+
+  build:
+    name: Build Docker image
+    runs-on: ubuntu-24.04
+    needs: tests
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t frost-webapp:ci .
+
+      - name: Smoke test Docker container
+        run: |
+          docker run -d --name frost-webapp -p 8080:5000 frost-webapp:ci
+          sleep 5
+          docker ps
+          docker logs frost-webapp
+          curl http://localhost:8080
+
+      - name: Login to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Tag Docker image
+        run: |
+          docker tag frost-webapp:ci ghcr.io/frostoff92/frost-webapp:latest
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/frostoff92/frost-webapp:latest
