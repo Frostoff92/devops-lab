@@ -27,6 +27,9 @@ jobs:
   tests:
     name: Run tests
     runs-on: ubuntu-24.04
+    env:
+      APP_ENV: c1
+      TEAM: frost-devops
 
     steps:
       - name: Checkout repository
@@ -67,6 +70,11 @@ jobs:
           docker --version
           python3 --version
           pip3 --version
+
+      - name: Show environment variables
+        run: |
+          echo: "Environment: $APP_ENV"
+          echo: "Team: $TEAM"
 
   build:
     name: Build Docker image
