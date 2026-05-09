@@ -76,6 +76,17 @@ jobs:
           echo "Environment: $APP_ENV"
           echo "Team: $TEAM"
 
+      - name: Step-level environment variable
+        env:
+          TEMP_VALUE: step-only
+        run: |
+          echo "Temp value: $TEMP_VALUE"
+          echo "App env still exists: $APP_ENV"
+
+      - name: Verify TEMP_VALUE disappeared
+        run: |
+          echo "Temp value: $TEMP_VALUE"
+
   build:
     name: Build Docker image
     runs-on: ubuntu-24.04
