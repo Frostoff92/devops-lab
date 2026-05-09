@@ -12,6 +12,18 @@ permissions:
 
 jobs:
   tests:
+  build:
+    name: Build Docker image
+    runs-on: ubuntu-24.04
+    needs: tests
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t frost-webapp:ci .
     name: Run tests
     runs-on: ubuntu-24.04
 
