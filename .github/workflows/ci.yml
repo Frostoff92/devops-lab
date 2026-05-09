@@ -73,8 +73,8 @@ jobs:
 
       - name: Show environment variables
         run: |
-          echo: "Environment: $APP_ENV"
-          echo: "Team: $TEAM"
+          echo "Environment: $APP_ENV"
+          echo "Team: $TEAM"
 
   build:
     name: Build Docker image
