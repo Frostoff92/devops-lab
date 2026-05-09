@@ -94,6 +94,7 @@ jobs:
 
   build:
     name: Build Docker image
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     needs:
       - tests
