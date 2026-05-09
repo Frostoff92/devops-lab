@@ -11,8 +11,8 @@ permissions:
   packages: write
 
 jobs:
-  lint:
-    name: Lint project
+  tests:
+    name: Run tests
     runs-on: ubuntu-24.04
 
     steps:
