@@ -123,6 +123,10 @@ jobs:
             --label org.opencontainers.image.created=$(date -u +%Y-%m-%dT%H:%M:%SZ) \
             -t frost-webapp:ci .
 
+      - name: Inspect Docker image labels
+        run: |
+          docker inspect frost-webapp:ci | grep org.opencontainers.image
+
       - name: Smoke test Docker container
         run: |
           docker run -d --name frost-webapp -p 8080:5000 frost-webapp:ci
