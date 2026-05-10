@@ -134,7 +134,9 @@ jobs:
       - name: Tag Docker image
         run: |
           docker tag frost-webapp:ci ghcr.io/frostoff92/frost-webapp:latest
+          docker tag frost-webapp:ci ghcr.io/frostoff92/frost-webapp:sha-${GITHUB_SHA::7}
 
       - name: Push Docker image
         run: |
           docker push ghcr.io/frostoff92/frost-webapp:latest
+          docker push ghcr.io/frostoff92/frost-webapp:sha-${GITHUB_SHA::7}
