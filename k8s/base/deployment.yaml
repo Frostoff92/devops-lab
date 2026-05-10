@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frost-webapp
-          image: ghcr.io/frostoff92/frost-webapp:v1.0.6
+          image: ghcr.io/frostoff92/frost-webapp:v1.0.7
           ports:
             - containerPort: 5000
           readinessProbe:
