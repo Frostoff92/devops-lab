@@ -162,3 +162,11 @@ jobs:
       - name: Show release tag
         run: |
           echo "Release tag detected: ${GITHUB_REF}"
+
+      - name: Extract release version
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Show release version
+        run: |
+          echo "Release version: $RELEASE_VERSION"
