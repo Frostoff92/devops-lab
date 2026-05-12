@@ -1,15 +1,15 @@
 # Общая сеть для сервисов
 resource "docker_network" "lab" {
-  name = "lab_net"
+  name = var.network_name
 }
 
 # Web-приложение из GHCR
 resource "docker_image" "web" {
-  name = "ghcr.io/frostoff92/frost-webapp:latest"
+  name = var.web_image
 }
 
 resource "docker_container" "web" {
-  name  = "frost-webapp"
+  name  = var.web_container_name
   image = docker_image.web.name
 
   networks_advanced {
@@ -18,7 +18,7 @@ resource "docker_container" "web" {
 
   ports {
     internal = 5000
-    external = 5000
+    external = var.web_external_port
   }
 
   restart = "unless-stopped"
@@ -27,11 +27,11 @@ resource "docker_container" "web" {
 
 # Redis как пример доп. сервиса
 resource "docker_image" "redis" {
-  name = "redis:7-alpine"
+  name = var.redis_image
 }
 
 resource "docker_container" "redis" {
-  name  = "lab-redis"
+  name  = var.redis_container_name
   image = docker_image.redis.name
 
   networks_advanced {
@@ -39,10 +39,6 @@ resource "docker_container" "redis" {
   }
 
   restart = "unless-stopped"
-}
-
-output "web_url" {
-  value = "http://localhost:5000"
 }
 
 resource "null_resource" "ansible_nginx_proxy" {
@@ -57,7 +53,7 @@ resource "null_resource" "ansible_nginx_proxy" {
   provisioner "local-exec" {
     # Переходим в каталог ansible
     working_dir = "${path.module}/../ansible"
-    command     = "ansible-playbook -i inventory.ini site.yml"
+    command     = "ansible-playbook -i inventory.ini site.yml --extra-vars 'lab_net=${var.network_name} web_container_name=${var.web_container_name}'"
   }
 
   # Явно говорим: сначала должны существовать контейнеры

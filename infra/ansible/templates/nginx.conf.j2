@@ -2,7 +2,7 @@ events {}
 
 http {
   upstream webapp {
-    server frost-webapp:5000;
+    server {{ web_container_name }}:5000;
   }
 
   server {

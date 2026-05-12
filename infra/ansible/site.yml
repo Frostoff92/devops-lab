@@ -7,8 +7,8 @@
     - community.docker
 
   vars:
-    lab_net: "lab_net"
-    conf_dir: "{{lookup('env', 'HOME') }}/nginx-proxy"
+    lab_net: "dev_lab_net"
+    web_container_name: "dev-frost-webapp"
 
   tasks:
     - name: Ensure config dir exists
