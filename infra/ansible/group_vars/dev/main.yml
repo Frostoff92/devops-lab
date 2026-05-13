@@ -1,0 +1,9 @@
+---
+lab_net: dev_lab_net
+web_container_name: dev-frost-webapp
+
+nginx_container_name: nginx-proxy
+nginx_image: nginx:1.27-alpine
+nginx_external_port: 80
+
+conf_dir: "{{ lookup('env', 'HOME') }}/nginx-proxy"

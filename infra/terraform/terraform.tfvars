@@ -1,5 +1,3 @@
-network_name       = "dev_lab_net"
-web_container_name = "dev-frost-webapp"
-web_external_port  = 5001
+environment = "dev"
 
-redis_container_name = "dev-redis"
+web_external_port = 5002

@@ -7,7 +7,7 @@ output "web_url" {
 output "network_name" {
   description = "Docker network name"
 
-  value = docker_network.lab.name
+  value = module.network.network_name
 }
 
 output "web_container" {

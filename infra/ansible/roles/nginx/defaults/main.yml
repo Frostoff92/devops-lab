@@ -1,0 +1,6 @@
+---
+nginx_container_name: nginx-proxy
+nginx_image: nginx:1.27-alpine
+nginx_external_port: 80
+
+conf_dir: "{{ lookup('env', 'HOME') }}/nginx-proxy"

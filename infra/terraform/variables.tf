@@ -33,3 +33,11 @@ variable "redis_image" {
   type        = string
   default     = "redis:7-alpine"
 }
+
+variable "environment" {
+  description = "Environment name"
+
+  type = string
+
+  default = "dev"
+}
