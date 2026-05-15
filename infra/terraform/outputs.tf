@@ -13,5 +13,17 @@ output "network_name" {
 output "web_container" {
   description = "Web container name"
 
-  value = docker_container.web.name
+  value = local.web_container_name
+}
+
+output "nginx_container_name" {
+  value = "nginx-proxy"
+}
+
+output "webapp_container_name" {
+  value = "dev-frost-webapp"
+}
+
+output "docker_network_name" {
+  value = "dev_lab_net"
 }

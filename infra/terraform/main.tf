@@ -10,29 +10,30 @@ resource "docker_image" "web" {
   name = var.web_image
 }
 
-resource "docker_container" "web" {
-  name  = local.web_container_name
-  image = docker_image.web.name
-
-  networks_advanced {
-    name = module.network.network_name
-  }
-
-  ports {
-    internal = 5000
-    external = var.web_external_port
-  }
-
-  restart = "unless-stopped"
-  env     = ["APP_ENV=prod"]
-
-  lifecycle {
-    ignore_changes = [
-      env
-    ]
-    create_before_destroy = true
-  }
-}
+# resource "docker_container" "web" {
+#  name  = local.web_container_name
+#  image = docker_image.web.name
+#
+#  networks_advanced {
+#    name = module.network.network_name
+#  }
+#
+#  ports {
+#    internal = 5000
+#    external = var.web_external_port
+#  }
+#
+#  restart = "unless-stopped"
+#  env     = ["APP_ENV=prod"]
+#
+#  lifecycle {
+#    ignore_changes = [
+#      env
+#   ]
+#    create_before_destroy = true
+#  }
+#}
+#
 
 # Redis как пример доп. сервиса
 resource "docker_image" "redis" {
@@ -67,7 +68,6 @@ resource "null_resource" "ansible_nginx_proxy" {
 
   # Явно говорим: сначала должны существовать контейнеры
   depends_on = [
-    docker_container.web,
     docker_container.redis
   ]
 }

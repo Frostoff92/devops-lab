@@ -1,9 +1,12 @@
-lab_net: dev-lab_net
+lab_net: dev_lab_net
+
 nginx_external_port: 8080
 nginx_container_name: nginx-proxy
 nginx_image: nginx:alpine
+
 conf_dir: /opt/nginx-proxy
 
 nginx_port: 80
 environment_name: dev
+
 proxy_pass_target: http://webapp

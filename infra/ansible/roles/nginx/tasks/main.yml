@@ -1,5 +1,8 @@
 ---
 - name: Ensure config dir exists
+  tags:
+    - nginx
+    - config
   become: true
   ansible.builtin.file:
     path: "{{ conf_dir }}"
@@ -13,21 +16,28 @@
     dest: "{{ conf_dir }}/nginx.conf"
     mode: '0644'
   notify: Restart nginx proxy
+  tags:
+    - nginx
+    - config
 
 - name: Ensure Docker network exists
+  tags:
+    - network
   community.docker.docker_network:
     name: "{{ lab_net }}"
     state: present
 
 - name: Run nginx proxy container
+  tags:
+    - nginx
+    - container
   community.docker.docker_container:
     name: "{{ nginx_container_name }}"
     image: "{{ nginx_image }}"
     state: started
     restart_policy: unless-stopped
-
-    networks:
-      - name: "{{ lab_net }}"
+    recreate: true
+    network_mode: "{{ lab_net }}"
 
     published_ports:
       - "{{ nginx_external_port }}:80"
